@@ -165,6 +165,26 @@
   }
 }
 
+@keyframes hoverFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes hoverGlow {
+  0%, 100% { box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12); }
+  50% { box-shadow: 0 8px 25px -5px rgba(59, 130, 246, 0.25), 0 10px 10px -5px rgba(59, 130, 246, 0.04); }
+}
+
+@keyframes hoverScale {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.02); }
+}
+
+@keyframes hoverRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(2deg); }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -205,6 +225,50 @@
 
 .animate-fade-in-scale {
   animation: fadeInScale 0.5s ease-out;
+}
+
+/* Hover Effects */
+.hover-float:hover {
+  animation: hoverFloat 0.6s ease-in-out;
+}
+
+.hover-glow:hover {
+  animation: hoverGlow 0.3s ease-in-out forwards;
+}
+
+.hover-scale:hover {
+  animation: hoverScale 0.2s ease-out forwards;
+}
+
+.hover-rotate:hover {
+  animation: hoverRotate 0.3s ease-out forwards;
+}
+
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.hover-slide {
+  transition: all 0.3s ease;
+}
+
+.hover-slide:hover {
+  transform: translateX(5px);
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.hover-bounce {
+  transition: transform 0.2s ease;
+}
+
+.hover-bounce:hover {
+  transform: scale(1.05);
+  animation: bounce 0.6s ease-in-out;
 }
 
 .material-elevation-1 {

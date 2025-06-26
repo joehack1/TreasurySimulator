@@ -49,21 +49,21 @@ export default function Dashboard() {
       <header className="bg-white material-elevation-2 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <Building2 className="text-blue-600 h-8 w-8 mr-3" />
-              <h1 className="text-2xl font-bold text-gray-900">Treasury Movement Simulator</h1>
+            <div className="flex items-center hover-lift transition-all duration-300 cursor-pointer">
+              <Building2 className="text-blue-600 h-8 w-8 mr-3 hover-rotate hover-bounce" />
+              <h1 className="text-2xl font-bold text-gray-900 hover-slide">Treasury Movement Simulator</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="flex items-center bg-gray-100 rounded-full px-4 py-2">
-                <TrendingUp className="text-green-600 mr-2 h-4 w-4" />
-                <span className="text-sm font-medium">Total: {calculateTotalUsd()}</span>
+              <div className="flex items-center bg-gray-100 rounded-full px-4 py-2 hover-lift hover-glow transition-all duration-300 cursor-pointer">
+                <TrendingUp className="text-green-600 mr-2 h-4 w-4 hover-bounce" />
+                <span className="text-sm font-medium hover-scale">Total: {calculateTotalUsd()}</span>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => refetch()}>
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Refresh
+              <Button variant="ghost" size="sm" onClick={() => refetch()} className="hover-lift hover-bounce transition-all duration-300">
+                <RefreshCw className="h-4 w-4 mr-2 hover-rotate" />
+                <span className="hover-slide">Refresh</span>
               </Button>
-              <Button variant="ghost" size="sm">
-                <Bell className="h-4 w-4" />
+              <Button variant="ghost" size="sm" className="hover-lift hover-bounce transition-all duration-300">
+                <Bell className="h-4 w-4 hover-float" />
               </Button>
             </div>
           </div>
@@ -81,9 +81,9 @@ export default function Dashboard() {
               <CardContent className="p-6">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-xl font-semibold text-gray-900">Account Dashboard</h2>
-                  <Button variant="outline" size="sm" onClick={() => refetch()}>
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Refresh
+                  <Button variant="outline" size="sm" onClick={() => refetch()} className="hover-lift hover-bounce transition-all duration-300">
+                    <RefreshCw className="h-4 w-4 mr-2 hover-rotate" />
+                    <span className="hover-slide">Refresh</span>
                   </Button>
                 </div>
                 
@@ -100,8 +100,9 @@ export default function Dashboard() {
                     <Button 
                       variant="ghost" 
                       onClick={() => setShowAllAccounts(!showAllAccounts)}
+                      className="hover-lift hover-bounce transition-all duration-300"
                     >
-                      {showAllAccounts ? "Show Less" : `Show ${accounts.length - 6} More Accounts`}
+                      <span className="hover-slide">{showAllAccounts ? "Show Less" : `Show ${accounts.length - 6} More Accounts`}</span>
                     </Button>
                   </div>
                 )}

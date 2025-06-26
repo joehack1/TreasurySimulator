@@ -237,11 +237,11 @@ export default function TransferForm({ accounts }: TransferFormProps) {
 
           <Button 
             type="submit" 
-            className="w-full material-elevation-2 hover:material-elevation-4"
+            className="w-full material-elevation-2 hover:material-elevation-4 hover-lift hover-glow transition-all duration-300"
             disabled={transferMutation.isPending}
           >
-            <Send className="mr-2 h-4 w-4" />
-            {transferMutation.isPending ? "Processing..." : "Execute Transfer"}
+            <Send className="mr-2 h-4 w-4 hover-bounce" />
+            <span className="hover-slide">{transferMutation.isPending ? "Processing..." : "Execute Transfer"}</span>
           </Button>
         </form>
       </CardContent>

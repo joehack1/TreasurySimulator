@@ -135,7 +135,7 @@ export default function TransactionLog({ accounts }: TransactionLogProps) {
                 setDateFromFilter("");
                 setDateToFilter("");
               }}
-              className="px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-md transition-colors w-full"
+              className="px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-md transition-all duration-300 w-full hover-lift hover-bounce"
             >
               Clear Filters
             </button>

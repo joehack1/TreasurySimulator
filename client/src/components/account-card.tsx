@@ -51,26 +51,26 @@ export default function AccountCard({ account }: AccountCardProps) {
   };
 
   return (
-    <Card className={`border-l-4 ${getCurrencyBorderColor(account.currency)} bg-white material-elevation-1 hover:material-elevation-2 transition-all duration-300 animate-slide-in`}>
+    <Card className={`border-l-4 ${getCurrencyBorderColor(account.currency)} bg-white material-elevation-1 hover:material-elevation-2 transition-all duration-300 animate-slide-in hover-lift hover-glow cursor-pointer`}>
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
           <div>
-            <h3 className="font-bold text-gray-900">{account.name}</h3>
+            <h3 className="font-bold text-gray-900 hover-slide transition-all duration-200">{account.name}</h3>
             <div className="flex items-center mt-1">
-              <span className="text-2xl mr-2">{getCurrencyFlag(account.currency)}</span>
-              <span className="text-sm text-gray-600">{getAccountTypeLabel(account.accountType)}</span>
+              <span className="text-2xl mr-2 hover-bounce">{getCurrencyFlag(account.currency)}</span>
+              <span className="text-sm text-gray-600 hover-slide transition-all duration-200">{getAccountTypeLabel(account.accountType)}</span>
             </div>
           </div>
-          <div className={getCurrencyColor(account.currency)}>
+          <div className={`${getCurrencyColor(account.currency)} hover-rotate transition-all duration-300`}>
             {getAccountIcon(account.accountType)}
           </div>
         </div>
         <div className="mt-3">
-          <p className={`text-2xl font-bold ${getCurrencyColor(account.currency)} animate-count-up`}>
+          <p className={`text-2xl font-bold ${getCurrencyColor(account.currency)} animate-count-up hover-scale transition-all duration-200`}>
             {formatCurrency(account.balance, account.currency)}
           </p>
           {getUsdEquivalent() && (
-            <p className="text-xs text-gray-500 mt-1">{getUsdEquivalent()}</p>
+            <p className="text-xs text-gray-500 mt-1 hover-slide transition-all duration-200">{getUsdEquivalent()}</p>
           )}
         </div>
       </CardContent>
