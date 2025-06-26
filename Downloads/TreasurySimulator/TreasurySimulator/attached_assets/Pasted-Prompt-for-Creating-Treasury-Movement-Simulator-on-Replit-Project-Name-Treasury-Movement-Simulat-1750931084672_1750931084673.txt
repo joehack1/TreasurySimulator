@@ -1,0 +1,216 @@
+Prompt for Creating Treasury Movement Simulator on Replit
+
+Project Name: Treasury Movement Simulator
+Platform: Replit (using React + Node.js template)
+Purpose: Simulate B2B fintech treasury operations for African businesses handling KES, USD, and NGN currencies
+
+Core Requirements:
+
+Account Dashboard:
+
+Create 10 virtual accounts with naming convention: [Provider]_[Currency]_[Number] (e.g., Mpesa_KES_1, Flutterwave_NGN_3)
+
+Each account card should display:
+
+Account name (bold)
+
+Currency flag/icon (🇰🇪,🇺🇸,🇳🇬)
+
+Current balance (formatted with commas)
+
+Currency code (KES/USD/NGN)
+
+Transfer System:
+
+Build a transfer form with:
+
+"From Account" dropdown (filtered by positive balance)
+
+"To Account" dropdown
+
+Amount input (with currency validation)
+
+Notes textarea
+
+Date picker for future-dated transfers (UI only)
+
+Implement validation:
+
+Source account must have sufficient balance
+
+Disable same-account transfers
+
+Amount must be positive number
+
+FX Conversion:
+
+Use static conversion rates:
+
+1 USD = 150 KES
+
+1 USD = 800 NGN
+
+1 KES = 5.33 NGN
+
+Show conversion preview when currencies differ
+
+Display both original and converted amounts in transaction log
+
+Transaction Log:
+
+Table with columns:
+
+Timestamp
+
+From Account (with currency)
+
+To Account (with currency)
+
+Amount Sent
+
+Amount Received (if FX)
+
+Status
+
+Notes
+
+Add filtering by:
+
+Account name
+
+Currency
+
+Date range
+
+UI/UX Requirements:
+
+Use Material-UI or Chakra UI for professional components
+
+Mobile-responsive layout
+
+Color-code currencies (e.g., KES in green, USD in blue)
+
+Success/error notifications for transfers
+
+Loading states during FX calculations
+
+Implementation Steps:
+
+Setup:
+
+bash
+npx create-react-app treasury-simulator
+cd treasury-simulator
+npm install @mui/material @emotion/react @emotion/styled @mui/icons-material date-fns
+Sample Data Structure:
+
+javascript
+const initialAccounts = [
+  {
+    id: "mpesa_kes_1",
+    name: "Mpesa_KES_1",
+    provider: "Mpesa",
+    currency: "KES",
+    balance: 1250000,
+    type: "mobile_money"
+  },
+  {
+    id: "uba_ngn_1", 
+    name: "UBA_NGN_1",
+    provider: "UBA",
+    currency: "NGN",
+    balance: 3500000,
+    type: "bank"
+  },
+  // 8 more accounts...
+];
+
+const fxRates = {
+  KES_USD: 0.0067,
+  USD_KES: 150,
+  NGN_USD: 0.00125,
+  USD_NGN: 800,
+  KES_NGN: 5.33,
+  NGN_KES: 0.19
+};
+Key Components to Build:
+
+AccountCard.js - Displays balance with currency formatting
+
+TransferForm.js - Handles all transfer logic
+
+TransactionTable.js - With sorting/filtering
+
+FXCalculator.js - Helper component for conversions
+
+Essential Functions:
+
+javascript
+// Sample transfer handler
+const handleTransfer = (fromId, toId, amount, note) => {
+  const fromAccount = accounts.find(a => a.id === fromId);
+  const toAccount = accounts.find(a => a.id === toId);
+  
+  // Validate balance
+  if (fromAccount.balance < amount) {
+    showError("Insufficient funds");
+    return;
+  }
+
+  // Calculate FX if needed
+  let receivedAmount = amount;
+  if (fromAccount.currency !== toAccount.currency) {
+    const rateKey = `${fromAccount.currency}_${toAccount.currency}`;
+    receivedAmount = amount * fxRates[rateKey];
+  }
+
+  // Update state
+  setAccounts(prev => prev.map(acc => {
+    if (acc.id === fromId) return {...acc, balance: acc.balance - amount};
+    if (acc.id === toId) return {...acc, balance: acc.balance + receivedAmount};
+    return acc;
+  }));
+
+  // Log transaction
+  setTransactions(prev => [{
+    id: Date.now(),
+    date: new Date(),
+    from: fromAccount.name,
+    to: toAccount.name,
+    amount,
+    receivedAmount,
+    fromCurrency: fromAccount.currency,
+    toCurrency: toAccount.currency,
+    note,
+    status: 'completed'
+  }, ...prev]);
+};
+Testing Requirements:
+
+Verify KES→USD→NGN conversion chain
+
+Test insufficient balance validation
+
+Confirm transaction log accuracy
+
+Check mobile responsiveness
+
+Bonus Features:
+
+Account balance thresholds (warning colors when low)
+
+Bulk transfer template
+
+Mock API for "processing" state
+
+Export transaction log as CSV
+
+Deployment:
+
+Create new Replit using Node.js template
+
+Paste this prompt in README.md
+
+Build components incrementally
+
+Use Replit's built-in hosting
