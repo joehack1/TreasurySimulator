@@ -1,4 +1,6 @@
 import { accounts, transactions, type Account, type InsertAccount, type Transaction, type InsertTransaction } from "@shared/schema";
+import { db } from "./db";
+import { eq, and, gte, lte, or, desc } from "drizzle-orm";
 
 export interface IStorage {
   // Account operations
@@ -204,4 +206,93 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// keep IStorage the same
+
+// rewrite MemStorage to DatabaseStorage
+export class DatabaseStorage implements IStorage {
+  async getAllAccounts(): Promise<Account[]> {
+    return await db.select().from(accounts);
+  }
+
+  async getAccount(id: string): Promise<Account | undefined> {
+    const [account] = await db.select().from(accounts).where(eq(accounts.id, id));
+    return account || undefined;
+  }
+
+  async updateAccountBalance(id: string, newBalance: string): Promise<Account | undefined> {
+    const [updatedAccount] = await db
+      .update(accounts)
+      .set({ balance: newBalance })
+      .where(eq(accounts.id, id))
+      .returning();
+    return updatedAccount || undefined;
+  }
+
+  async createTransaction(transaction: InsertTransaction): Promise<Transaction> {
+    const [newTransaction] = await db
+      .insert(transactions)
+      .values({
+        fromAccountId: transaction.fromAccountId,
+        toAccountId: transaction.toAccountId,
+        fromAccountName: transaction.fromAccountName,
+        toAccountName: transaction.toAccountName,
+        amountSent: transaction.amountSent,
+        amountReceived: transaction.amountReceived,
+        fromCurrency: transaction.fromCurrency,
+        toCurrency: transaction.toCurrency,
+        exchangeRate: transaction.exchangeRate ?? null,
+        notes: transaction.notes ?? null,
+        status: transaction.status ?? "completed",
+        transferDate: transaction.transferDate,
+      })
+      .returning();
+    return newTransaction;
+  }
+
+  async getAllTransactions(): Promise<Transaction[]> {
+    return await db.select().from(transactions).orderBy(desc(transactions.createdAt));
+  }
+
+  async getTransactionsByFilters(filters: {
+    accountId?: string;
+    currency?: string;
+    dateFrom?: string;
+    dateTo?: string;
+  }): Promise<Transaction[]> {
+    const conditions = [];
+
+    if (filters.accountId) {
+      conditions.push(
+        or(
+          eq(transactions.fromAccountId, filters.accountId),
+          eq(transactions.toAccountId, filters.accountId)
+        )
+      );
+    }
+
+    if (filters.currency) {
+      conditions.push(
+        or(
+          eq(transactions.fromCurrency, filters.currency),
+          eq(transactions.toCurrency, filters.currency)
+        )
+      );
+    }
+
+    if (filters.dateFrom) {
+      conditions.push(gte(transactions.transferDate, new Date(filters.dateFrom)));
+    }
+
+    if (filters.dateTo) {
+      conditions.push(lte(transactions.transferDate, new Date(filters.dateTo)));
+    }
+
+    if (conditions.length > 0) {
+      return await db.select().from(transactions).where(and(...conditions)).orderBy(desc(transactions.createdAt));
+    }
+
+    return await db.select().from(transactions).orderBy(desc(transactions.createdAt));
+  }
+}
+
+export const storage = new DatabaseStorage();
